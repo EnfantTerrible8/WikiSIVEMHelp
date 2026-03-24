@@ -1,32 +1,18 @@
-
-const CACHE = 'wikisiv-emhelp-v1';
-const ASSETS = [
-  './',
-  './index.html',
-  './manifest.webmanifest',
-  './icon-180.png',
-  './icon-192.png',
-  './icon-512.png'
+const CACHE_NAME = "wikisiv-emhelp-v1";
+const urlsToCache = [
+  "/",
+  "/index.html",
+  "/logo.png"
 ];
-self.addEventListener('install', event => {
-  event.waitUntil(caches.open(CACHE).then(cache => cache.addAll(ASSETS)));
-  self.skipWaiting();
-});
-self.addEventListener('activate', event => {
+
+self.addEventListener("install", event => {
   event.waitUntil(
-    caches.keys().then(keys => Promise.all(keys.filter(k => k !== CACHE).map(k => caches.delete(k))))
+    caches.open(CACHE_NAME).then(cache => cache.addAll(urlsToCache))
   );
-  self.clients.claim();
 });
-self.addEventListener('fetch', event => {
+
+self.addEventListener("fetch", event => {
   event.respondWith(
-    caches.match(event.request).then(resp => {
-      if (resp) return resp;
-      return fetch(event.request).then(networkResp => {
-        const copy = networkResp.clone();
-        caches.open(CACHE).then(cache => cache.put(event.request, copy));
-        return networkResp;
-      }).catch(() => caches.match('./index.html'));
-    })
+    caches.match(event.request).then(response => response || fetch(event.request))
   );
 });
