@@ -1,0 +1,1 @@
+Estrutura pendente para futura autenticação.
