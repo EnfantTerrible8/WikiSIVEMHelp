@@ -1,0 +1,5 @@
+Estrutura pendente para futura autenticação:
+- base de dados de utilizadores verificados
+- password geral
+- logs de utilização
+Esta versão mantém a app sem autenticação para teste clínico/funcional.
